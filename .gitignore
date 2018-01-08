@@ -57,3 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
+# Sample project for testing purposes
+sample_project
