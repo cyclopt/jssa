@@ -11,11 +11,11 @@ function log(message) {
 }
 
 function onStart() {
-  console.log("Sonarjs analysis started");
+  //console.log("Sonarjs analysis started");
 }
  
 function onEnd() {
-  console.log("Sonarjs analysis finished");
+  //console.log("Sonarjs analysis finished");
 }
 
 // Run analyzer

@@ -56,7 +56,7 @@ module.exports = {
       inspector.run(); // Run inspector
     
       wstream.on('finish', function () {
-        analysis_output.result = JSON.parse(memStore.output.toString());
+        analysis_output.jsinspect = JSON.parse(memStore.output.toString());
         resolve(analysis_output);
       });
       wstream.on('error', reject);
