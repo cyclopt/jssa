@@ -17,7 +17,7 @@ const lib = require('./utilities/functions_library');
 
 function escomplex(list_of_files){
 
-  project_source = _.chain(project_files).map(lib.readCode).reject(['code', null]).value();
+  project_source = _.chain(list_of_files).map(lib.readCode).reject(['code', null]).value();
   return escomplex_analysis.analysis(project_source);
   
 }
