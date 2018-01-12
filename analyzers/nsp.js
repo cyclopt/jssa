@@ -9,14 +9,14 @@ const shell = require('shelljs');
 
 module.exports = {
   // Perfrorm analysis
-  analysis: function (pathToPackage, environment = 'LINUX') {
+  analysis: function (jssaAbsPath, pathToPackage, environment = 'LINUX') {
     // Check for environment
     switch(environment){
       case 'LINUX':
-        var command_output = shell.exec(`./node_modules/.bin/nsp check ${pathToPackage} --reporter json`, { silent: true }).stdout;
+        var command_output = shell.exec(`${jssaAbsPath}/node_modules/.bin/nsp check ${pathToPackage} --reporter json`, { silent: true }).stdout;
         break;
       case 'WINDOWS':
-        var command_output = shell.exec(`node_modules\\.bin\\nsp.cmd check ${pathToPackage} --reporter json`, { silent: false }).stdout;
+        var command_output = shell.exec(`${jssaAbsPath}\\node_modules\\.bin\\nsp.cmd check ${pathToPackage} --reporter json`, { silent: true }).stdout;
         break;
       default:
         return {
