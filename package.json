@@ -1,0 +1,33 @@
+{
+  "name": "jssa",
+  "version": "1.0.0",
+  "description": "JS static analyzer (jssa): An aggregation of javascript source code static analysis tools",
+  "main": "analysis.js",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "escomplex": "^2.0.0-alpha",
+    "eslint": "^4.15.0",
+    "eslint-config-secure": "^0.2.1",
+    "esprima": "^4.0.0",
+    "fs": "^0.0.1-security",
+    "jsinspect": "^0.12.7",
+    "lodash": "^4.17.4",
+    "nsp": "^3.1.0",
+    "shelljs": "^0.7.8",
+    "sonarjs": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cyclopt/jssa.git"
+  },
+  "author": "Cyclopt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cyclopt/jssa/issues"
+  },
+  "homepage": "https://github.com/cyclopt/jssa#readme"
+}
