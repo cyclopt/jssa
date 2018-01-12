@@ -24,40 +24,49 @@ function escomplex(list_of_files){
 
 function eslint(list_of_files){
 
-    return eslint_analysis.analysis(list_of_files);    
+  return eslint_analysis.analysis(list_of_files);    
 }
 
 function nsp(project, environemnt){
   
-    return nsp_analysis.analysis(project, environemnt);    
+  // Get the absolute path of the jssa installed directory. If spaces are contained in the path, then they need to be escaped.
+  var jssaAbsPath = __dirname.replace(' ', '\" \"');
+  return nsp_analysis.analysis(jssaAbsPath, project, environemnt);    
 }
 
 function jsinspect(list_of_files){
     
-    return jsinspect_analysis.analysis(list_of_files);    
+  return jsinspect_analysis.analysis(list_of_files);    
 }
 
 function sonarjs(project){
     
-    return sonarjs_analysis.analysis(project);    
+  return sonarjs_analysis.analysis(project);    
 }
 
-project_root = "sample_project";
-project_files = ["sample_project/index.js", "sample_project/index2.js"];
-
-console.log('---- escomplex ----');
-console.log(escomplex(project_files));
-console.log('---- eslint ----');
-console.log(eslint(project_files).eslint.results[0].messages);
-console.log('---- nsp ----');
-console.log(nsp(project_root, "WINDOWS"));
-var pr_jsinspect = jsinspect(project_files);
-Promise.all([pr_jsinspect]).then(values => { 
-  console.log('---- jsinspect ----');
-  console.log(values[0].result[0]);
-});
-var pr_sonarjs = sonarjs(project_root);
-Promise.all([pr_sonarjs]).then(values => { 
-  console.log('---- sonarjs ----');
-  console.log(values[0]);
-});
+module.exports = {
+  analyze_all: function (project_root, list_of_files, environemnt){
+    return new Promise((resolve, reject) => {
+      escomplex_results = escomplex(list_of_files);
+      eslint_results = eslint(list_of_files);
+      nsp_results = nsp(project_root, environemnt);
+      jsinspect(project_files).then(jsinspect_results => {
+        sonarjs(project_root).then(sonarjs_results => {
+          var results = {};
+          results.escomplex = escomplex_results.escomplex;
+          results.eslint = eslint_results.eslint;
+          results.nsp = nsp_results.nsp;
+          results.jsinspect = jsinspect_results;
+          results.sonarjs = sonarjs_results;
+          resolve(results);
+        })
+        .catch(err =>{
+          reject("sonarjs analysis failed");
+        });
+      })
+      .catch(err =>{
+        reject("jsinspect analysis failed");
+      });
+    });
+  }
+};
