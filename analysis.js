@@ -81,9 +81,7 @@ module.exports = {
     });
   },
   analyze_nsp: function(project_root, environemnt){
-    console.log('env: ' + environemnt);
     return new Promise((resolve, reject) => {
-      console.log('env1: ' + environemnt);
       resolve(nsp(project_root, environemnt));
     });
   },
