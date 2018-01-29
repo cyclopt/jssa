@@ -7,7 +7,7 @@ const { analyze } = require("sonarjs");
 
 // Function for logging purposes
 function log(message) {
-  console.log(message);
+  //console.log(message);
 }
 
 function onStart() {
@@ -26,10 +26,10 @@ async function runSonarJS(project_path, exclusions) {
 
 module.exports = {
   // Perfrorm analysis
-  analysis: function (project_path) {
+  analysis: function (project_path, exclude = "") {
     return new Promise((resolve, reject) => {
       // Run sonarjs
-      issues = runSonarJS(project_path, "");
+      issues = runSonarJS(project_path, "**" + exclude + "**");
       resolve(issues);
     });
   }
