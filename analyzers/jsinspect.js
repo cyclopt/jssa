@@ -50,14 +50,20 @@ module.exports = {
       const analysis_output = {};
       
       // Create inspector
-      const inspector = new jsinspect.Inspector(list_of_files, { "threshold": 10 });
+      const inspector = new jsinspect.Inspector(list_of_files, { "threshold": 25 });
       // Create reporter
       const reporter = new jsinspect.reporters.json(inspector, { "writableStream": wstream });
       inspector.run(); // Run inspector
     
       wstream.on('finish', function () {
-        analysis_output.jsinspect = JSON.parse(memStore.output.toString());
-        resolve(analysis_output);
+        try {
+          analysis_output.jsinspect = JSON.parse(memStore.output.toString());
+          resolve(analysis_output);
+        } catch (error) {
+          // TODO (Handle cases where the buffer is more than 256MB. In those cases toString() function fails)
+          analysis_output.jsinspect = JSON.parse('[]');
+          resolve(analysis_output);
+        }
       });
       wstream.on('error', reject);
     });
