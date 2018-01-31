@@ -29,7 +29,7 @@ module.exports = {
   analysis: function (project_path, exclude = "") {
     return new Promise((resolve, reject) => {
       // Run sonarjs
-      issues = runSonarJS(project_path, "**" + exclude + "**");
+      issues = runSonarJS(project_path, exclude);
       resolve(issues);
     });
   }
