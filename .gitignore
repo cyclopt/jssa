@@ -5,6 +5,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# IDEs and editors
+.project
+.settings/
+
 # Runtime data
 pids
 *.pid
@@ -58,4 +62,4 @@ typings/
 .env
 
 # Sample project for testing purposes
-sample_project
+sample_projectz
