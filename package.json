@@ -14,11 +14,30 @@
     "lodash": "^4.17.4",
     "nsp": "^3.1.0",
     "shelljs": "^0.7.8",
-    "sonarjs": "^1.0.0"
+    "sonarjs": "^1.0.0",
+    "walk": "^2.3.9"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "jest": "^22.4.3",
+    "jest-cli": "^22.4.3",
+    "make-coverage-badge": "^1.0.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --coverage & make-coverage-badge"
+  },
+  "jest": {
+    "verbose": true,
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json-summary"
+    ],
+    "collectCoverageFrom": [
+      "**/*.{js}"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/sample_project/"
+    ]
   },
   "repository": {
     "type": "git",
