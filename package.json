@@ -20,23 +20,26 @@
   "devDependencies": {
     "jest": "^22.4.3",
     "jest-cli": "^22.4.3",
-    "make-coverage-badge": "^1.0.1"
+    "jest-coverage-badges": "^1.0.0"
   },
   "scripts": {
-    "test": "jest --coverage & make-coverage-badge"
+    "test": "jest --coverage & jest-coverage-badges"
   },
   "jest": {
     "verbose": true,
     "collectCoverage": true,
     "coverageReporters": [
-      "json-summary"
+      "json-summary",
+      "text",
+      "lcov"
     ],
     "collectCoverageFrom": [
       "**/*.{js}"
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/node_modules/",
-      "<rootDir>/sample_project/"
+      "<rootDir>/sample_project/",
+      "<rootDir>/coverage/"
     ]
   },
   "repository": {

@@ -1,4 +1,5 @@
 [![Cyclopt rating](https://qaas.cyclopt.com/api/projects/5af58bbb718d390004e0feb8/badge)](https://qaas.cyclopt.com)
+<img src="badge-statements.svg"/>
 
 # jssa
 > JS static analyzer (jssa): An aggregation of javascript source code static analysis tools
