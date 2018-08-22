@@ -1,6 +1,6 @@
 {
   "name": "jssa",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "JS static analyzer (jssa): An aggregation of javascript source code static analysis tools",
   "main": "analysis.js",
   "dependencies": {
@@ -38,7 +38,8 @@
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/node_modules/",
-      "<rootDir>/sample_project/",
+      "<rootDir>/example_project/",
+      "<rootDir>/examples/",
       "<rootDir>/coverage/"
     ]
   },

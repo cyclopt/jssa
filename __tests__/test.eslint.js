@@ -1,7 +1,7 @@
 const analysis = require('../analysis');
 const utilities = require('../utilities/functions_library');
 
-var project_root_directory = "sample_project";
+var project_root_directory = "example_project";
 
 let analysis_results;
 let list_of_files;
@@ -21,5 +21,8 @@ describe('eslint analysis', () =>{
   });
   it('Count errors and warnings', () => {
     expect(analysis_results.eslint.errorCount).toBeGreaterThan(0);
+  });
+  it('Number of errors', () => {
+    expect(analysis_results.eslint.errorCount).toBe(4);
   });
 });

@@ -37,3 +37,14 @@ jssa.analyze_all(project_root_directory, list_of_js_files, "WINDOWS").then(res =
   console.log(err); // Print error 
 });
 ```
+
+## Test
+
+The example_project folder contains a project created using `express-generator`. 
+
+The file `appcopy.js` was added to be caught by `jsinspect`. In the `package.json` one extra vulnerable package was added.
+
+To run the tests:
+```sh
+npm test
+```

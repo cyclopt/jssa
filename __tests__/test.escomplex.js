@@ -1,7 +1,7 @@
 const analysis = require('../analysis');
 const utilities = require('../utilities/functions_library');
 
-var project_root_directory = "sample_project";
+var project_root_directory = "example_project";
 
 let analysis_results;
 let list_of_files;

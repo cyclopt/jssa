@@ -63,3 +63,5 @@ typings/
 
 # Sample project for testing purposes
 sample_project
+
+.sonarlint

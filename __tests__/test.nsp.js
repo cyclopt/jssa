@@ -1,11 +1,11 @@
 const analysis = require('../analysis');
 
-var project_root_directory = "sample_project";
+var project_root_directory = "example_project";
 
 let analysis_results;
 
 beforeAll(async () => {
-  await analysis.analyze_nsp(project_root_directory, "WINDOWS").then(res =>{
+  await analysis.analyze_nsp(project_root_directory).then(res =>{
     analysis_results = res;
   });
 });

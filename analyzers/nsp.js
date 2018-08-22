@@ -9,20 +9,13 @@ const shell = require('shelljs');
 
 module.exports = {
   // Perfrorm analysis
-  analysis: function (jssaAbsPath, pathToPackage, environment = 'LINUX') {
+  analysis: function (jssaAbsPath, pathToPackage) {
     // Check for environment
-    switch(environment){
-      case 'LINUX':
-        var command_output = shell.exec(`${jssaAbsPath}/node_modules/.bin/nsp check ${pathToPackage} --reporter json`, { silent: true }).stdout;
-        break;
-      case 'WINDOWS':
-        var command_output = shell.exec(`${jssaAbsPath}\\node_modules\\.bin\\nsp.cmd check ${pathToPackage} --reporter json`, { silent: true }).stdout;
-        break;
-      default:
-        return {
-          path: pathToPackage,
-          "nsp": []
-        };  
+    const isWin = process.platform === "win32";
+    if(isWin) {
+      var command_output = shell.exec(`${jssaAbsPath}\\node_modules\\.bin\\nsp.cmd check ${pathToPackage} --reporter json`, { silent: true }).stdout;
+    } else {
+      var command_output = shell.exec(`${jssaAbsPath}/node_modules/.bin/nsp check ${pathToPackage} --reporter json`, { silent: true }).stdout;
     }
     
     // If shell command output does not exist, it means that there was no package.json found on the project path 
@@ -34,17 +27,11 @@ module.exports = {
           path: pathToPackage,
           "nsp": nspAnalysis
         };
+      } else {
+        throw new Error('nsp analysis could not be parsed');
       }
-      return {
-        path: pathToPackage,
-        "nsp": []
-      };
-    }
-    else{
-      return {
-        path: pathToPackage,
-        "nsp": []
-      };
+    } else {
+      throw new Error('no package.json found');
     }
   }
 };

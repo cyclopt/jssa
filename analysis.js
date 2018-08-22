@@ -46,11 +46,11 @@ function sonarjs(project){
 }
 
 module.exports = {
-  analyze_all: function (project_root, list_of_files, environemnt){
+  analyze_all: function (project_root, list_of_files){
     return new Promise((resolve, reject) => {
       escomplex_results = escomplex(list_of_files);
       eslint_results = eslint(list_of_files);
-      nsp_results = nsp(project_root, environemnt);
+      nsp_results = nsp(project_root);
       jsinspect(list_of_files).then(jsinspect_results => {
         sonarjs(project_root).then(sonarjs_results => {
           var results = {};
