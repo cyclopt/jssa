@@ -1,7 +1,7 @@
 const utilities = require('../utilities/functions_library');
 const analysis = require('../analysis');
 
-var project_root_directory = "../example_project";
+var project_root_directory = "example_project";
 
 utilities.get_list_of_js_files(project_root_directory).then(paths => {
     console.log(paths);
