@@ -65,3 +65,4 @@ typings/
 sample_project
 
 .sonarlint
+.DS_Store
