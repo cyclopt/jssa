@@ -1,6 +1,6 @@
 {
   "name": "jssa",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "JS static analyzer (jssa): An aggregation of javascript source code static analysis tools",
   "main": "analysis.js",
   "dependencies": {
