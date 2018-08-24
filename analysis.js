@@ -6,7 +6,6 @@
 const _ = require('lodash');
 const fs = require('fs');
 
-
 // Load analyzers
 const escomplex_analysis = require('./analyzers/escomplex');
 const eslint_analysis = require('./analyzers/eslint');
@@ -123,51 +122,3 @@ module.exports = {
     });
   }
 };
-
-
-// module.exports.analyze_all('example_project' ,['example_project/routes/index.js']).then(res =>{
-//   console.log(JSON.stringify(res))
-// })
-
-module.exports.analyze_npmaudit('./').then(res =>{
-  console.log('npmaudit')
-  console.log(JSON.stringify(res))
-})
-
-// module.exports.analyze_sonarjs('example_project').then(res =>{
-//   console.log('sonar')
-//   console.log(JSON.stringify(res))
-// })
-
-// module.exports.analyze_escomplex(['example_project/routes/index.js']).then(res =>{
-//   console.log('escomplex')
-//   console.log(JSON.stringify(res))
-// })
-
-// module.exports.analyze_jsinspect(['example_project/routes/index.js']).then(res =>{
-//   console.log('jsinspect')
-//   console.log(JSON.stringify(res))
-// })
-
-// module.exports.analyze_nsp('example_project').then(res =>{
-//   console.log('nsp')
-//   console.log(JSON.stringify(res))
-// })
-
-// module.exports.analyze_eslint(['example_project/routes/index.js']).then(res =>{
-//   console.log('eslint')
-//   console.log(JSON.stringify(res))
-// })
-
-
-// const package = JSON.stringify(require('./pacage.json'));
-// const packageLock = JSON.stringify(require('./package-lock.json'));
- 
-
-// const runNpmAudit = require('run-npm-audit');
- 
-// const package = JSON.stringify(require('./package.json'));
-// const packageLock = JSON.stringify(require('./package-lock.json'));
- 
-// const report = runNpmAudit({ package, packageLock});
-// console.log(JSON.stringify(report))
