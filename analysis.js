@@ -27,12 +27,11 @@ function eslint(list_of_files){
   return eslint_analysis.analysis(list_of_files);    
 }
 
-function nsp(project, environemnt){
+function nsp(project){
   
-  // Get the absolute path of the jssa installed directory. If spaces are contained in the path, then they need to be escaped.
-  var jssaAbsPath = __dirname.replace(' ', '\" \"');
+  // If spaces are contained in the path, then they need to be escaped.
   var projectAbsPath = project.replace(' ', '\" \"');
-  return nsp_analysis.analysis(jssaAbsPath, projectAbsPath, environemnt);    
+  return nsp_analysis.analysis(projectAbsPath);
 }
 
 function jsinspect(list_of_files){
@@ -80,9 +79,9 @@ module.exports = {
       resolve(eslint(list_of_files));
     });
   },
-  analyze_nsp: function(project_root, environemnt){
+  analyze_nsp: function(project_root){
     return new Promise((resolve, reject) => {
-      resolve(nsp(project_root, environemnt));
+      resolve(nsp(project_root));
     });
   },
   analyze_jsinspect: function(list_of_files){

@@ -26,7 +26,7 @@
     "jest-coverage-badges": "^1.0.0"
   },
   "scripts": {
-    "test": "node_modules/.bin/jest --coverage & node_modules/.bin/jest-coverage-badges & rm ./badge-lines.svg & cp coverage/badge-lines.svg ."
+    "test": "node_modules/.bin/jest --coverage; node_modules/.bin/jest-coverage-badges; cp coverage/badge-lines.svg ."
   },
   "jest": {
     "verbose": true,

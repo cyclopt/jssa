@@ -9,13 +9,13 @@ const shell = require('shelljs');
 
 module.exports = {
   // Perfrorm analysis
-  analysis: function (jssaAbsPath, pathToPackage) {
+  analysis: function (pathToPackage, silent=true) {
     // Check for environment
     const isWin = process.platform === "win32";
     if(isWin) {
-      var command_output = shell.exec(`${jssaAbsPath}\\node_modules\\.bin\\nsp.cmd check ${pathToPackage} --reporter json`, { silent: true }).stdout;
+      var command_output = shell.exec(`node_modules\\.bin\\nsp.cmd check ${pathToPackage} --reporter json`, { silent }).stdout;
     } else {
-      var command_output = shell.exec(`${jssaAbsPath}/node_modules/.bin/nsp check ${pathToPackage} --reporter json`, { silent: true }).stdout;
+      var command_output = shell.exec(`node_modules/.bin/nsp check ${pathToPackage} --reporter json`, { silent }).stdout;
     }
     
     // If shell command output does not exist, it means that there was no package.json found on the project path 
@@ -31,7 +31,7 @@ module.exports = {
         throw new Error('nsp analysis could not be parsed');
       }
     } else {
-      throw new Error('no package.json found');
+      throw new Error('no nsp command or no package.json found');
     }
   }
 };
