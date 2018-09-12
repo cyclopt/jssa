@@ -38,12 +38,10 @@ function nsp(project){
 }
 
 function npmaudit(project){
-  // console.log(__dirname);
-  const packageJSONFilepath = path.join(__dirname, project, 'package.json')
-  const packageLockFilepath = path.join(__dirname, project, 'package-lock.json')
-  console.log(packageJSONFilepath);
+  console.log(project);
+  const packageJSONFilepath = path.join(project, 'package.json')
+  const packageLockFilepath = path.join(project, 'package-lock.json')
   if(fs.existsSync(packageJSONFilepath) && fs.existsSync(packageLockFilepath)){
-    console.log(JSON.stringify(require(packageJSONFilepath)));
     const packageJSON = JSON.stringify(require(packageJSONFilepath));
     const packageLock = JSON.stringify(require(packageLockFilepath));
     return npmaudit_analysis.analysis(packageJSON, packageLock);

@@ -1,6 +1,8 @@
+const path = require('path');
+
 const analysis = require('../analysis');
 
-var project_root_directory = "example_project";
+const project_root_directory = path.join(__dirname, '..', 'example_project');
 
 let analysis_results;
 
