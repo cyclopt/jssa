@@ -15,6 +15,10 @@ analysis.analyze_nsp(project_root_directory).then(res =>{
     console.log(res);
 });
 
+analysis.analyze_npmaudit(project_root_directory).then(res =>{
+    console.log(res);
+});
+
 utilities.get_list_of_js_files(project_root_directory).then(paths => {
     return analysis.analyze_jsinspect(paths).then(res =>{
         console.log(res)

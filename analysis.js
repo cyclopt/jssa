@@ -5,6 +5,7 @@
 // Load libraries
 const _ = require('lodash');
 const fs = require('fs');
+const path = require('path');
 
 // Load analyzers
 const escomplex_analysis = require('./analyzers/escomplex');
@@ -37,18 +38,20 @@ function nsp(project){
 }
 
 function npmaudit(project){
-  
-  if(fs.existsSync(project + '/package.json') && fs.existsSync(project + '/package-lock.json')){
-    const package = JSON.stringify(require(project + '/package.json'))
-    const packageLock = JSON.stringify(require(project + '/package-lock.json'))
-
-    return npmaudit_analysis.analysis(package, packageLock);
-  }
-  else{
-    if(fs.existsSync(project + '/package.json')){
+  // console.log(__dirname);
+  const packageJSONFilepath = path.join(__dirname, project, 'package.json')
+  const packageLockFilepath = path.join(__dirname, project, 'package-lock.json')
+  console.log(packageJSONFilepath);
+  if(fs.existsSync(packageJSONFilepath) && fs.existsSync(packageLockFilepath)){
+    console.log(JSON.stringify(require(packageJSONFilepath)));
+    const packageJSON = JSON.stringify(require(packageJSONFilepath));
+    const packageLock = JSON.stringify(require(packageLockFilepath));
+    return npmaudit_analysis.analysis(packageJSON, packageLock);
+  } else {
+    if(!fs.existsSync(packageJSONFilepath)){
       return {"npmaudit": {"error": "package.json not found"}};
     }
-    else{
+    else {
       return {"npmaudit": {"error": "package-lock.json not found"}};
     }
     

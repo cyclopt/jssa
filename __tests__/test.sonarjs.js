@@ -14,6 +14,6 @@ beforeAll(async () => {
 
 describe('sonarjs analysis', () =>{
   it('Violations found', () => {
-    expect(analysis_results.length).toBeGreaterThan(0);
+    expect(analysis_results.sonarjs.length).toBeGreaterThan(0);
   });
 });

@@ -6,10 +6,10 @@ const runNpmAudit = require('run-npm-audit');
 
 module.exports = {
   // Perfrorm analysis
-  analysis: function (package, packageLock) {
+  analysis: function (packageJSON, packageLock) {
     return new Promise((resolve, reject) => {
       // Run npmaudit
-      const npmaudit_report = runNpmAudit({ package, packageLock });
+      const npmaudit_report = runNpmAudit({ 'package': packageJSON, 'packageLock': packageLock });
       resolve({"npmaudit": npmaudit_report});
     });
   }
