@@ -20,8 +20,8 @@ function onEnd() {
 
 // Run analyzer
 async function runSonarJS(project_path, exclusions) {
-  const issues = await analyze(project_path, { log, onStart, onEnd, exclusions: exclusions });  
-  return issues;
+  const issues = await analyze(project_path, { log, onStart, onEnd, exclusions: exclusions });
+  return { "sonarjs": issues };
 }
 
 module.exports = {
