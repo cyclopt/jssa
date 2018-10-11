@@ -41,7 +41,11 @@ The file `appcopy.js` was added to be caught by `jsinspect`. In the `package.jso
 
 To run the tests:
 ```sh
-npm test
+npm test-windows
+```
+or
+```sh
+npm test-linux
 ```
 
 ## Publish steps
