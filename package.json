@@ -3,6 +3,9 @@
   "version": "0.0.5",
   "description": "JS static analyzer (jssa): An aggregation of javascript source code static analysis tools",
   "main": "analysis.js",
+  "bin": {
+    "jssa": "./bin/jssa-cli.js"
+  },
   "dependencies": {
     "babel-eslint": "^8.2.3",
     "bluebird": "^3.5.1",
@@ -16,6 +19,7 @@
     "fs": "^0.0.1-security",
     "jsinspect": "^0.12.7",
     "lodash": "^4.17.10",
+    "minimist": "^1.2.0",
     "nsp": "^3.2.1",
     "run-npm-audit": "^1.0.2",
     "shelljs": "^0.7.8",
