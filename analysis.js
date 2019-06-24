@@ -10,7 +10,6 @@ const path = require('path');
 // Load analyzers
 const escomplex_analysis = require('./analyzers/escomplex');
 const eslint_analysis = require('./analyzers/eslint');
-const nsp_analysis = require('./analyzers/nsp');
 const npmaudit_analysis = require('./analyzers/npmaudit');
 const jsinspect_analysis = require('./analyzers/jsinspect');
 const sonarjs_analysis = require('./analyzers/sonarjs');
@@ -30,15 +29,7 @@ function eslint(list_of_files){
   return eslint_analysis.analysis(list_of_files);    
 }
 
-function nsp(project){
-  
-  // If spaces are contained in the path, then they need to be escaped.
-  var projectAbsPath = project.replace(' ', '\" \"');
-  return nsp_analysis.analysis(projectAbsPath);
-}
-
 function npmaudit(project){
-  console.log(project);
   const packageJSONFilepath = path.join(project, 'package.json')
   const packageLockFilepath = path.join(project, 'package-lock.json')
   if(fs.existsSync(packageJSONFilepath) && fs.existsSync(packageLockFilepath)){
@@ -72,13 +63,13 @@ module.exports = {
     return new Promise((resolve, reject) => {
       escomplex_results = escomplex(list_of_files);
       eslint_results = eslint(list_of_files);
-      nsp_results = nsp(project_root);
+      npm_audit_results = npmaudit(project_root);
       jsinspect(list_of_files).then(jsinspect_results => {
         sonarjs(project_root).then(sonarjs_results => {
           var results = {};
           results.escomplex = escomplex_results.escomplex;
           results.eslint = eslint_results.eslint;
-          results.nsp = nsp_results.nsp;
+          results.npm_audit = npm_audit_results.npmaudit;
           results.jsinspect = jsinspect_results;
           results.sonarjs = sonarjs_results;
           resolve(results);
@@ -100,11 +91,6 @@ module.exports = {
   analyze_eslint: function(list_of_files){
     return new Promise((resolve, reject) => {
       resolve(eslint(list_of_files));
-    });
-  },
-  analyze_nsp: function(project_root){
-    return new Promise((resolve, reject) => {
-      resolve(nsp(project_root));
     });
   },
   analyze_npmaudit: function(project_root){
