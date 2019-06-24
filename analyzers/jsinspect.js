@@ -24,7 +24,7 @@ class WMStrm {
         // save key 
         this.key = key; 
         // Create an empty buffer
-        memStore[key] = new Buffer(''); 
+        memStore[key] = new Buffer.alloc(0);
     }
     _write(chunk, enc, cb) {
         // our memory store stores things in buffers
