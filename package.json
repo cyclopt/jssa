@@ -7,21 +7,20 @@
     "jssa": "./bin/jssa-cli.js"
   },
   "dependencies": {
-    "babel-eslint": "^8.2.3",
-    "bluebird": "^3.5.1",
-    "escomplex": "^2.0.0-alpha",
-    "eslint": "^5.6.1",
-    "eslint-plugin-react": "^7.8.2",
-    "eslint-plugin-react-native": "^3.2.1",
+    "babel-eslint": "^10.0.2",
+    "bluebird": "^3.5.5",
+    "escomplex": "github:cyclopt/escomplex",
+    "eslint": "^6.0.1",
+    "eslint-plugin-react": "^7.14.2",
+    "eslint-plugin-react-native": "^3.7.0",
     "eslint-plugin-security": "^1.4.0",
-    "eslint-plugin-sonarjs": "^0.2.0",
+    "eslint-plugin-sonarjs": "^0.4.0",
     "esprima": "^4.0.1",
-    "fs": "^0.0.1-security",
     "jsinspect": "^0.12.7",
     "lodash": "^4.17.11",
     "minimist": "^1.2.0",
     "run-npm-audit": "^1.0.2",
-    "shelljs": "^0.7.8",
+    "shelljs": "^0.8.3",
     "sonarjs": "^1.0.0",
     "walk": "^2.3.14"
   },
@@ -29,7 +28,7 @@
     "jest": "^24.8.0",
     "jest-cli": "^24.8.0",
     "jest-coverage-badges": "^1.1.2",
-    "npm-run-all": "^4.1.3"
+    "npm-run-all": "^4.1.5"
   },
   "scripts": {
     "test-windows": "jest --coverage & jest-coverage-badges & copy coverage\\badge-lines.svg badge-lines.svg",
@@ -37,14 +36,15 @@
   },
   "jest": {
     "verbose": true,
-    "collectCoverage": true,
     "coverageReporters": [
       "json-summary",
       "text",
       "lcov"
     ],
     "collectCoverageFrom": [
-      "**/*.{js}"
+      "analyzers/*",
+      "analysis.js",
+      "utilities/*"
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/node_modules/",

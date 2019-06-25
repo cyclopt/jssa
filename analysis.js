@@ -9,7 +9,6 @@ const path = require('path');
 
 // Load analyzers
 const escomplex_analysis = require('./analyzers/escomplex');
-const eslint_analysis = require('./analyzers/eslint');
 const npmaudit_analysis = require('./analyzers/npmaudit');
 const jsinspect_analysis = require('./analyzers/jsinspect');
 const sonarjs_analysis = require('./analyzers/sonarjs');
@@ -21,12 +20,12 @@ function escomplex(list_of_files){
 
   project_source = _.chain(list_of_files).map(lib.readCode).reject(['code', null]).value();
   return escomplex_analysis.analysis(project_source);
-  
+
 }
 
 function eslint(list_of_files){
 
-  return eslint_analysis.analysis(list_of_files);    
+  return require('./analyzers/eslint').analysis(list_of_files);
 }
 
 function npmaudit(project){
@@ -43,19 +42,19 @@ function npmaudit(project){
     else {
       return {"npmaudit": {"error": "package-lock.json not found"}};
     }
-    
+
   }
-  
+
 }
 
 function jsinspect(list_of_files){
-    
-  return jsinspect_analysis.analysis(list_of_files);    
+
+  return jsinspect_analysis.analysis(list_of_files);
 }
 
 function sonarjs(project){
-    
-  return sonarjs_analysis.analysis(project);    
+
+  return sonarjs_analysis.analysis(project);
 }
 
 module.exports = {
