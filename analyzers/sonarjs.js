@@ -2,35 +2,35 @@
  * This file contains code that runs sonarjs static analyzer
  */
 
-// Load libraries 
+// Load libraries
 const { analyze } = require("sonarjs");
 
 // Function for logging purposes
 function log(message) {
-  //console.log(message);
+	console.log(message);
 }
 
 function onStart() {
-  //console.log("Sonarjs analysis started");
+	console.log("Sonarjs analysis started");
 }
- 
+
 function onEnd() {
-  //console.log("Sonarjs analysis finished");
+	console.log("Sonarjs analysis finished");
 }
 
 // Run analyzer
-async function runSonarJS(project_path, exclusions) {
-  const issues = await analyze(project_path, { log, onStart, onEnd, exclusions: exclusions });
-  return { "sonarjs": issues };
+async function runSonarJS(projectPath, exclusions) {
+	const issues = await analyze(projectPath, { log, onStart, onEnd, exclusions });
+	return { sonarjs: issues };
 }
 
 module.exports = {
-  // Perfrorm analysis
-  analysis: function (project_path, exclude = "") {
-    return new Promise((resolve, reject) => {
-      // Run sonarjs
-      issues = runSonarJS(project_path, exclude);
-      resolve(issues);
-    });
-  }
+	// Perfrorm analysis
+	analysis(projectPath, exclude = "") {
+		return new Promise((resolve, reject) => {
+			// Run sonarjs
+			const issues = runSonarJS(projectPath, exclude);
+			resolve(issues);
+		});
+	},
 };

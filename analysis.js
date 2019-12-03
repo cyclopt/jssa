@@ -3,108 +3,132 @@
  */
 
 // Load libraries
-const _ = require('lodash');
-const fs = require('fs');
-const path = require('path');
+const _ = require("lodash");
+const CommentsExtractor = require("comments-extractor");
+const fs = require("fs");
+const path = require("path");
 
 // Load analyzers
-const escomplex_analysis = require('./analyzers/escomplex');
-const npmaudit_analysis = require('./analyzers/npmaudit');
-const jsinspect_analysis = require('./analyzers/jsinspect');
-const sonarjs_analysis = require('./analyzers/sonarjs');
+const escomplexAnalysis = require("./analyzers/escomplex");
+const npmauditAnalysis = require("./analyzers/npmaudit");
+const jsinspectAnalysis = require("./analyzers/jsinspect");
+const sonarjsAnalysis = require("./analyzers/sonarjs");
 
 // Load custom modules
-const lib = require('./utilities/functions_library');
+const lib = require("./utilities/functions_library");
 
-function escomplex(list_of_files){
 
-  project_source = _.chain(list_of_files).map(lib.readCode).reject(['code', null]).value();
-  return escomplex_analysis.analysis(project_source);
+function commentsAnalyzer(listOfFiles) {
+	const commentsInfo = [];
+	listOfFiles.forEach((filePath) => {
+		try {
+			const extractor = new CommentsExtractor(filePath);
+			const info = extractor.extract();
+			commentsInfo.push({
+				filePath,
+				commentsLOC: [...info][0][1]
+					.map((el) => el.value.split("\n").length)
+					.reduce((acc, cur) => acc + cur),
+			});
+		} catch (error) {
+			commentsInfo.push({
+				filePath,
+				commentsLOC: 0,
+			});
+		}
+	});
 
+	return commentsInfo;
 }
 
-function eslint(list_of_files){
+function escomplex(listOfFiles) {
+	const projectSource = _.chain(listOfFiles).map(lib.readCode).reject(["code", null]).value();
 
-  return require('./analyzers/eslint').analysis(list_of_files);
+	return escomplexAnalysis.analysis(projectSource);
 }
 
-function npmaudit(project){
-  const packageJSONFilepath = path.join(project, 'package.json')
-  const packageLockFilepath = path.join(project, 'package-lock.json')
-  if(fs.existsSync(packageJSONFilepath) && fs.existsSync(packageLockFilepath)){
-    const packageJSON = JSON.stringify(require(packageJSONFilepath));
-    const packageLock = JSON.stringify(require(packageLockFilepath));
-    return npmaudit_analysis.analysis(packageJSON, packageLock);
-  } else {
-    if(!fs.existsSync(packageJSONFilepath)){
-      return {"npmaudit": {"error": "package.json not found"}};
-    }
-    else {
-      return {"npmaudit": {"error": "package-lock.json not found"}};
-    }
-
-  }
-
+function eslint(listOfFiles) {
+	return require("./analyzers/eslint").analysis(listOfFiles);
 }
 
-function jsinspect(list_of_files){
+function npmaudit(project) {
+	const packageJSONFilepath = path.join(project, "package.json");
+	const packageLockFilepath = path.join(project, "package-lock.json");
+	if (fs.existsSync(packageJSONFilepath) && fs.existsSync(packageLockFilepath)) {
+		const packageJSON = fs.readFileSync(packageJSONFilepath).toString("utf-8");
+		const packageLock = fs.readFileSync(packageLockFilepath).toString("utf-8");
+		return npmauditAnalysis.analysis(packageJSON, packageLock);
+	}
+	if (!fs.existsSync(packageJSONFilepath)) {
+		return { npmaudit: { error: "package.json not found" } };
+	}
 
-  return jsinspect_analysis.analysis(list_of_files);
+	return { npmaudit: { error: "package-lock.json not found" } };
 }
 
-function sonarjs(project){
+function jsinspect(listOfFiles) {
+	return jsinspectAnalysis.analysis(listOfFiles);
+}
 
-  return sonarjs_analysis.analysis(project);
+function sonarjs(project) {
+	return sonarjsAnalysis.analysis(project);
 }
 
 module.exports = {
-  analyze_all: function (project_root, list_of_files){
-    return new Promise((resolve, reject) => {
-      escomplex_results = escomplex(list_of_files);
-      eslint_results = eslint(list_of_files);
-      npm_audit_results = npmaudit(project_root);
-      jsinspect(list_of_files).then(jsinspect_results => {
-        sonarjs(project_root).then(sonarjs_results => {
-          var results = {};
-          results.escomplex = escomplex_results.escomplex;
-          results.eslint = eslint_results.eslint;
-          results.npm_audit = npm_audit_results.npmaudit;
-          results.jsinspect = jsinspect_results;
-          results.sonarjs = sonarjs_results;
-          resolve(results);
-        })
-        .catch(err =>{
-          reject("sonarjs analysis failed");
-        });
-      })
-      .catch(err =>{
-        reject("jsinspect analysis failed");
-      });
-    });
-  },
-  analyze_sonarjs: function(project_root){
-    return new Promise((resolve, reject) => {
-      resolve(sonarjs(project_root));
-    });
-  },
-  analyze_eslint: function(list_of_files){
-    return new Promise((resolve, reject) => {
-      resolve(eslint(list_of_files));
-    });
-  },
-  analyze_npmaudit: function(project_root){
-    return new Promise((resolve, reject) => {
-      resolve(npmaudit(project_root));
-    });
-  },
-  analyze_jsinspect: function(list_of_files){
-    return new Promise((resolve, reject) => {
-      resolve(jsinspect(list_of_files));
-    });
-  },
-  analyze_escomplex: function(list_of_files){
-    return new Promise((resolve, reject) => {
-      resolve(escomplex(list_of_files));
-    });
-  }
+	analyze_all(projectRoot, listOfFiles) {
+		return new Promise((resolve, reject) => {
+			const escomplexResults = escomplex(listOfFiles);
+			const eslintResults = eslint(listOfFiles);
+			const npmauditResults = npmaudit(projectRoot);
+			const commentsResults = commentsAnalyzer(listOfFiles);
+			jsinspect(listOfFiles).then((jsinspectResults) => {
+				sonarjs(projectRoot).then((sonarjsResults) => {
+					const results = {};
+					results.escomplex = escomplexResults.escomplex;
+					results.eslint = eslintResults.eslint;
+					results.npm_audit = npmauditResults.npmaudit;
+					results.jsinspect = jsinspectResults;
+					results.sonarjs = sonarjsResults;
+					results.commentsInfo = commentsResults;
+					resolve(results);
+				})
+					.catch((err) => {
+						reject(new Error("sonarjs analysis failed", err));
+					});
+			})
+				.catch((err) => {
+					reject(new Error("jsinspect analysis failed", err));
+				});
+		});
+	},
+	analyze_sonarjs(projectRoot) {
+		return new Promise((resolve, reject) => {
+			resolve(sonarjs(projectRoot));
+			reject(new Error("sonarjs analysis failed"));
+		});
+	},
+	analyze_eslint(listOfFiles) {
+		return new Promise((resolve, reject) => {
+			resolve(eslint(listOfFiles));
+			reject(new Error("eslint analysis failed"));
+		});
+	},
+	analyze_npmaudit(projectRoot) {
+		return new Promise((resolve, reject) => {
+			resolve(npmaudit(projectRoot));
+			reject(new Error("npmaudit analysis failed"));
+		});
+	},
+	analyze_jsinspect(listOfFiles) {
+		return new Promise((resolve, reject) => {
+			resolve(jsinspect(listOfFiles));
+			reject(new Error("jsinspect analysis failed"));
+		});
+	},
+	analyze_escomplex(listOfFiles) {
+		return new Promise((resolve, reject) => {
+			resolve(escomplex(listOfFiles));
+			reject(new Error("escomplex analysis failed"));
+		});
+	},
 };

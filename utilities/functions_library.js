@@ -1,34 +1,42 @@
-const fs = require('fs');
-const walk = require('walk');
-const path = require('path');
+const fs = require("fs");
+const walk = require("walk");
+const path = require("path");
+
+function removeImportsExports(str) {
+	const newStr = str.replace(/^import.*$/m, "").replace(/^export.*$/m, "");
+
+	return newStr;
+}
 
 module.exports = {
-  readCode: function (pathToCode) {
-    if (fs.lstatSync(pathToCode).isDirectory()) {
-      return {
-        path: pathToCode,
-        code: null,
-      };
-    }
-    return {
-      path: pathToCode,
-      code: fs.readFileSync(pathToCode).toString().trim(),
-    };
-  },
-  get_list_of_js_files: function (root_dir){
+	readCode(pathToCode) {
+		if (fs.lstatSync(pathToCode).isDirectory()) {
+			return {
+				path: pathToCode,
+				code: null,
+			};
+		}
 
-    return new Promise((resolve, reject) => {
-      walker = walk.walk(root_dir, { filters: ["node_modules"] });
-      var list_of_files = [];
-      walker.on("file", function (root, fileStats, next) {
-        if(fileStats.name.endsWith('.js')){
-          list_of_files.push(root + path.sep + fileStats.name);
-        }
-        next();
-      });
-      walker.on("end", function () {
-        resolve(list_of_files);
-      });
-    });
-  }
+		return {
+			path: pathToCode,
+			loc: fs.readFileSync(pathToCode).toString().split("\n").length,
+			code: fs.readFileSync(pathToCode).toString().split("\r\n").map((el) => removeImportsExports(el))
+				.join("\r\n"),
+		};
+	},
+	get_list_of_js_files(rootDir) {
+		return new Promise((resolve, reject) => {
+			const walker = walk.walk(rootDir, { filters: ["node_modules"] });
+			const listOfFiles = [];
+			walker.on("file", (root, fileStats, next) => {
+				if (fileStats.name.endsWith(".js")) {
+					listOfFiles.push(root + path.sep + fileStats.name);
+				}
+				next();
+			});
+			walker.on("end", () => {
+				resolve(listOfFiles);
+			});
+		});
+	},
 };

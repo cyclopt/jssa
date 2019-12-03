@@ -1,2 +1,2 @@
 1 == 1;
-var package = document.getElementsByName("foo"); // Noncompliant
+const package = document.getElementsByName("foo"); // Noncompliant

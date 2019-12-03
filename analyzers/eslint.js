@@ -3,20 +3,20 @@
  */
 
 // Load libraries
-const { CLIEngine } = require('eslint');
-const path = require('path');
+const { CLIEngine } = require("eslint");
+const path = require("path");
 
 // Basic eslint rules
 const cli = new CLIEngine({
-  useEslintrc: false,
-  configFile: `${path.join(path.resolve(__dirname),'..')}/cyclopt-eslint.json`,
+	useEslintrc: false,
+	configFile: `${path.join(path.resolve(__dirname), "..")}/cyclopt-eslint.json`,
 });
 
 module.exports = {
-  // Perfrorm analysis
-  analysis: function (paths) {
-    return {
-      "eslint": cli.executeOnFiles(paths)
-    };
-  }
+	// Perfrorm analysis
+	analysis(paths) {
+		return {
+			eslint: cli.executeOnFiles(paths),
+		};
+	},
 };
