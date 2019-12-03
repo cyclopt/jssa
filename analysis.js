@@ -131,4 +131,10 @@ module.exports = {
 			reject(new Error("escomplex analysis failed"));
 		});
 	},
+	commentsAnalyzer(listOfFiles) {
+		return new Promise((resolve, reject) => {
+			resolve(commentsAnalyzer(listOfFiles));
+			reject(new Error("comments analyzer failed"));
+		});
+	},
 };
