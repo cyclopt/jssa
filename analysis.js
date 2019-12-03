@@ -38,7 +38,7 @@ function commentsAnalyzer(listOfFiles) {
 		}
 	});
 
-	return commentsInfo;
+	return { commentsAnalysis: commentsInfo };
 }
 
 function escomplex(listOfFiles) {
