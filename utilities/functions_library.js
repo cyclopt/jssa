@@ -3,9 +3,10 @@ const walk = require("walk");
 const path = require("path");
 
 function removeImportsExports(str) {
-	const newStr = str.replace(/^import.*$/m, "").replace(/^export.*$/m, "");
-
-	return newStr;
+	if (str.startsWith("import")) {
+		return "";
+	}
+	return str.replace(/^import.*$/m, "").replace(/^export.*$/m, "").replace("...", "");
 }
 
 module.exports = {
