@@ -10,7 +10,7 @@
     "babel-eslint": "^10.0.3",
     "bluebird": "^3.7.2",
     "comments-extractor": "^1.0.9",
-    "escomplex": "github:cyclopt/escomplex",
+    "escomplex": "github:cyclopt/escomplex#6f4bcde523ee6a83e582f9f9b7d4921f022f805a",
     "eslint": "^6.7.2",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-native": "^3.8.1",
