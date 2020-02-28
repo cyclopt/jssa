@@ -21,6 +21,8 @@ const lib = require("./utilities/functions_library");
 function commentsAnalyzer(listOfFiles) {
 	const commentsInfo = [];
 	listOfFiles.forEach((filePath) => {
+		const locInfo = lib.readCode(filePath);
+
 		try {
 			const extractor = new CommentsExtractor(filePath);
 			const info = extractor.extract();
@@ -28,8 +30,8 @@ function commentsAnalyzer(listOfFiles) {
 			if ([...info][0][1].length > 0) {
 				commentsInfo.push({
 					filePath,
-					lloc: lib.readCode(filePath).lloc,
-					ploc: lib.readCode(filePath).ploc,
+					lloc: locInfo.lloc,
+					ploc: locInfo.ploc,
 					commentsLOC: [...info][0][1]
 						.map((el) => el.value.split("\n").length)
 						.reduce((acc, cur) => acc + cur),
@@ -37,16 +39,17 @@ function commentsAnalyzer(listOfFiles) {
 			} else {
 				commentsInfo.push({
 					filePath,
-					lloc: lib.readCode(filePath).lloc,
-					ploc: lib.readCode(filePath).ploc,
+					lloc: locInfo.lloc,
+					ploc: locInfo.ploc,
 					commentsLOC: 0,
 				});
 			}
 		} catch (error) {
+			console.log(error);
 			commentsInfo.push({
 				filePath,
-				lloc: 0,
-				ploc: 0,
+				lloc: locInfo.lloc,
+				ploc: locInfo.ploc,
 				commentsLOC: 0,
 			});
 		}
