@@ -7,19 +7,26 @@ module.exports = {
 		if (fs.lstatSync(pathToCode).isDirectory()) {
 			return {
 				path: pathToCode,
+				ploc: 0,
+				lloc: 0,
 				code: null,
 			};
 		}
-
+		const sourceCode = fs.readFileSync(pathToCode).toString();
+		const ploc = sourceCode.split("\n").length;
+		const lloc = sourceCode.split("\n")
+			.map((el) => el === "" || el === "\r")
+			.reduce((acc, cur) => acc + cur);
 		return {
 			path: pathToCode,
-			loc: fs.readFileSync(pathToCode).toString().split("\n").length,
-			code: fs.readFileSync(pathToCode).toString(),
+			ploc,
+			lloc: ploc - lloc,
+			code: sourceCode,
 		};
 	},
 	get_list_of_js_files(rootDir) {
 		return new Promise((resolve, reject) => {
-			const walker = walk.walk(rootDir, { filters: ["node_modules"] });
+			const walker = walk.walk(rootDir, { filters: ["node_modules", "test"] });
 			const listOfFiles = [];
 			walker.on("file", (root, fileStats, next) => {
 				if (fileStats.name.endsWith(".js")) {

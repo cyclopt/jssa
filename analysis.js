@@ -26,6 +26,8 @@ function commentsAnalyzer(listOfFiles) {
 			const info = extractor.extract();
 			commentsInfo.push({
 				filePath,
+				lloc: lib.readCode(filePath).lloc,
+				ploc: lib.readCode(filePath).ploc,
 				commentsLOC: [...info][0][1]
 					.map((el) => el.value.split("\n").length)
 					.reduce((acc, cur) => acc + cur),

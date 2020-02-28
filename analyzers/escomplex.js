@@ -6,7 +6,10 @@
 const escomplex = require("escomplex");
 
 // escomplex properties
-const escomplexProperties = { ignoreErrors: true };
+const escomplexProperties = {
+	ignoreErrors: true,
+	skipCalculation: true,
+};
 
 module.exports = {
 	// Perfrorm analysis
