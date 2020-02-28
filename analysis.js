@@ -24,17 +24,29 @@ function commentsAnalyzer(listOfFiles) {
 		try {
 			const extractor = new CommentsExtractor(filePath);
 			const info = extractor.extract();
-			commentsInfo.push({
-				filePath,
-				lloc: lib.readCode(filePath).lloc,
-				ploc: lib.readCode(filePath).ploc,
-				commentsLOC: [...info][0][1]
-					.map((el) => el.value.split("\n").length)
-					.reduce((acc, cur) => acc + cur),
-			});
+
+			if ([...info][0][1].length > 0) {
+				commentsInfo.push({
+					filePath,
+					lloc: lib.readCode(filePath).lloc,
+					ploc: lib.readCode(filePath).ploc,
+					commentsLOC: [...info][0][1]
+						.map((el) => el.value.split("\n").length)
+						.reduce((acc, cur) => acc + cur),
+				});
+			} else {
+				commentsInfo.push({
+					filePath,
+					lloc: lib.readCode(filePath).lloc,
+					ploc: lib.readCode(filePath).ploc,
+					commentsLOC: 0,
+				});
+			}
 		} catch (error) {
 			commentsInfo.push({
 				filePath,
+				lloc: 0,
+				ploc: 0,
 				commentsLOC: 0,
 			});
 		}
