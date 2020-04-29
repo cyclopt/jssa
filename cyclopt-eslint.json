@@ -4,8 +4,8 @@
       "react-native/react-native": true
     },
     "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module",
+        "ecmaVersion": 2020,
+        "sourceType": "script",
         "ecmaFeatures": {
             "jsx": true,
             "modules": true,
@@ -30,5 +30,6 @@
             "pragma": "React",
             "version": "15.6.1"
         }
-    }
+    },
+    "ignorePatterns": ["cypress/", "test/", "tests/"]
   }

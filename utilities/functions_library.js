@@ -39,4 +39,7 @@ module.exports = {
 			});
 		});
 	},
+	removeImportsExports(str) {
+		return str.replace(/^import.*$/m, "").replace(/^export.*$/m, "");
+	},
 };

@@ -45,7 +45,6 @@ function commentsAnalyzer(listOfFiles) {
 				});
 			}
 		} catch (error) {
-			console.log(error);
 			commentsInfo.push({
 				filePath,
 				lloc: locInfo.lloc,
@@ -60,12 +59,22 @@ function commentsAnalyzer(listOfFiles) {
 
 function escomplex(listOfFiles) {
 	const projectSource = _.chain(listOfFiles).map(lib.readCode).reject(["code", null]).value();
+	projectSource.forEach(sourceCodeFile => {
+		sourceCodeFile.code = sourceCodeFile.code.split("\n").map((el) => lib.removeImportsExports(el)).join("\n");
+	});
 
 	return escomplexAnalysis.analysis(projectSource);
 }
 
 function eslint(listOfFiles) {
-	return require("./analyzers/eslint").analysis(listOfFiles);
+	const lintingResults = require("./analyzers/eslint").analysis(listOfFiles);
+
+	// Remove messages that originate from parsing error
+	lintingResults.eslint.results.forEach(element => {
+		element.messages = element.messages.filter(el => !el.fatal)
+	});
+
+	return lintingResults
 }
 
 function npmaudit(project) {
