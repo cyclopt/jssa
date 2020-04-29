@@ -1,19 +1,19 @@
-const analysis = require('../analysis');
+const analysis = require("../analysis");
 
-var project_root_directory = "example_project";
+const projectRootDirectory = "example_project";
 
-let analysis_results;
+let analysisResults;
 
 jest.setTimeout(30000);
 
 beforeAll(async () => {
-  await analysis.analyze_sonarjs(project_root_directory).then(res =>{
-    analysis_results = res;
-  });
+	await analysis.analyze_sonarjs(projectRootDirectory).then((res) => {
+		analysisResults = res;
+	});
 });
 
-describe('sonarjs analysis', () =>{
-  it('Violations found', () => {
-    expect(analysis_results.sonarjs.length).toBeGreaterThan(0);
-  });
+describe("sonarjs analysis", () => {
+	it("Violations found", () => {
+		expect(analysisResults.sonarjs.length).toBeGreaterThan(0);
+	});
 });

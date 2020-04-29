@@ -25,7 +25,7 @@ module.exports = {
 		};
 	},
 	get_list_of_js_files(rootDir) {
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			const walker = walk.walk(rootDir, { filters: ["node_modules", "test"] });
 			const listOfFiles = [];
 			walker.on("file", (root, fileStats, next) => {

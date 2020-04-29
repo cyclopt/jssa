@@ -1,19 +1,19 @@
-const path = require('path');
+const path = require("path");
 
-const analysis = require('../analysis');
+const analysis = require("../analysis");
 
-const project_root_directory = path.join(__dirname, '..', 'example_project');
+const projectRootDirectory = path.join(__dirname, "..", "example_project");
 
-let analysis_results;
+let analysisResults;
 
 beforeAll(async () => {
-  await analysis.analyze_npmaudit(project_root_directory).then(res => {
-      analysis_results = res;
-  });
+	await analysis.analyze_npmaudit(projectRootDirectory).then((res) => {
+		analysisResults = res;
+	});
 });
 
-describe('npm audit analysis', () => {
-  it('No package-lock.json found', () => {
-    expect(analysis_results.npmaudit.actions).toBe(undefined);
-  });
+describe("npm audit analysis", () => {
+	it("No package-lock.json found", () => {
+		expect(analysisResults.npmaudit.actions).toBe(undefined);
+	});
 });

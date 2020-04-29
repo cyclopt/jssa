@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 /**
  * This file contains code that runs the escomplex static analyzer
  */
@@ -30,7 +31,7 @@ class WMStrm {
 		// our memory store stores things in buffers
 		const buffer = (Buffer.isBuffer(chunk))
 			? chunk // already is Buffer use it
-			: new Buffer(chunk, enc); // string, convert
+			: Buffer.from(chunk, enc); // string, convert
 		// concat to the buffer already there
 		memStore[this.key] = Buffer.concat([memStore[this.key], buffer]);
 		cb();
@@ -51,6 +52,7 @@ module.exports = {
 			// Create inspector
 			const inspector = new jsinspect.Inspector(listOfFiles, { threshold: 25 });
 			// Create reporter
+			// eslint-disable-next-line no-unused-vars
 			const reporter = new jsinspect.reporters.json(inspector, { writableStream: wstream });
 			inspector.run(); // Run inspector
 

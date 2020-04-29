@@ -27,7 +27,7 @@ async function runSonarJS(projectPath, exclusions) {
 module.exports = {
 	// Perfrorm analysis
 	analysis(projectPath, exclude = "") {
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			// Run sonarjs
 			const issues = runSonarJS(projectPath, exclude);
 			resolve(issues);

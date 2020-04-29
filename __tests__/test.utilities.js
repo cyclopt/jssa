@@ -1,17 +1,17 @@
-const utilities = require('../utilities/functions_library');
+const utilities = require("../utilities/functions_library");
 
-var project_root_directory = "example_project";
+const projectRootDirectory = "example_project";
 
-let list_of_files;
+let listOfFiles;
 
 beforeAll(async () => {
-  await utilities.get_list_of_js_files(project_root_directory).then(paths => {
-    list_of_files = paths;
-  })
+	await utilities.get_list_of_js_files(projectRootDirectory).then((paths) => {
+		listOfFiles = paths;
+	});
 });
 
-describe('test utilities', () =>{
-  test('Get paths of all js files', () => {
-    expect(list_of_files.length).toBe(5);
-  });
-})
+describe("test utilities", () => {
+	test("Get paths of all js files", () => {
+		expect(listOfFiles.length).toBe(5);
+	});
+});

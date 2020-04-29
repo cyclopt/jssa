@@ -58,8 +58,8 @@ function commentsAnalyzer(listOfFiles) {
 }
 
 function escomplex(listOfFiles) {
-	const projectSource = _.chain(listOfFiles).map(lib.readCode).reject(["code", null]).value();
-	projectSource.forEach(sourceCodeFile => {
+	const projectSource = _.chain(listOfFiles).map((el) => lib.readCode(el)).reject(["code", null]).value();
+	projectSource.forEach((sourceCodeFile) => {
 		sourceCodeFile.code = sourceCodeFile.code.split("\n").map((el) => lib.removeImportsExports(el)).join("\n");
 	});
 
@@ -70,11 +70,11 @@ function eslint(listOfFiles) {
 	const lintingResults = require("./analyzers/eslint").analysis(listOfFiles);
 
 	// Remove messages that originate from parsing error
-	lintingResults.eslint.results.forEach(element => {
-		element.messages = element.messages.filter(el => !el.fatal)
+	lintingResults.eslint.results.forEach((element) => {
+		element.messages = element.messages.filter((el) => !el.fatal);
 	});
 
-	return lintingResults
+	return lintingResults;
 }
 
 function npmaudit(project) {
@@ -118,12 +118,12 @@ module.exports = {
 					results.commentsInfo = commentsResults;
 					resolve(results);
 				})
-					.catch((err) => {
-						reject(new Error("sonarjs analysis failed", err));
+					.catch((error) => {
+						reject(new Error("sonarjs analysis failed", error));
 					});
 			})
-				.catch((err) => {
-					reject(new Error("jsinspect analysis failed", err));
+				.catch((error) => {
+					reject(new Error("jsinspect analysis failed", error));
 				});
 		});
 	},
