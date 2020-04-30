@@ -77,13 +77,13 @@ function eslint(listOfFiles) {
 	return lintingResults;
 }
 
-function npmaudit(project) {
+function npmaudit(project, npmExecutablePath) {
 	const packageJSONFilepath = path.join(project, "package.json");
 	const packageLockFilepath = path.join(project, "package-lock.json");
 	if (fs.existsSync(packageJSONFilepath) && fs.existsSync(packageLockFilepath)) {
 		const packageJSON = fs.readFileSync(packageJSONFilepath).toString("utf-8");
 		const packageLock = fs.readFileSync(packageLockFilepath).toString("utf-8");
-		return npmauditAnalysis.analysis(packageJSON, packageLock);
+		return npmauditAnalysis.analysis(packageJSON, packageLock, npmExecutablePath);
 	}
 	if (!fs.existsSync(packageJSONFilepath)) {
 		return { npmaudit: { error: "package.json not found" } };
@@ -101,11 +101,11 @@ function sonarjs(project) {
 }
 
 module.exports = {
-	analyze_all(projectRoot, listOfFiles) {
+	analyze_all(projectRoot, listOfFiles, npmExecutablePath) {
 		return new Promise((resolve, reject) => {
 			const escomplexResults = escomplex(listOfFiles);
 			const eslintResults = eslint(listOfFiles);
-			const npmauditResults = npmaudit(projectRoot);
+			const npmauditResults = npmaudit(projectRoot, npmExecutablePath);
 			const commentsResults = commentsAnalyzer(listOfFiles);
 			jsinspect(listOfFiles).then((jsinspectResults) => {
 				sonarjs(projectRoot).then((sonarjsResults) => {
@@ -139,9 +139,9 @@ module.exports = {
 			reject(new Error("eslint analysis failed"));
 		});
 	},
-	analyze_npmaudit(projectRoot) {
+	analyze_npmaudit(projectRoot, npmExecutablePath) {
 		return new Promise((resolve, reject) => {
-			resolve(npmaudit(projectRoot));
+			resolve(npmaudit(projectRoot, npmExecutablePath));
 			reject(new Error("npmaudit analysis failed"));
 		});
 	},

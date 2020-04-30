@@ -20,7 +20,6 @@
     "jsinspect": "github:cyclopt/jsinspect#f254892f530b9eea11c39a9da6942d95a9ba3af0",
     "lodash": "^4.17.15",
     "minimist": "^1.2.5",
-    "run-npm-audit": "^1.0.2",
     "shelljs": "^0.8.4",
     "sonarjs": "^1.0.0",
     "walk": "^2.3.14"
