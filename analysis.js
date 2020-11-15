@@ -59,19 +59,34 @@ function commentsAnalyzer(listOfFiles) {
 
 function escomplex(listOfFiles) {
 	const projectSource = _.chain(listOfFiles).map((el) => lib.readCode(el)).reject(["code", null]).value();
-	projectSource.forEach((sourceCodeFile) => {
-		sourceCodeFile.code = sourceCodeFile.code.split("\n").map((el) => lib.removeImportsExports(el)).join("\n");
-	});
 
 	return escomplexAnalysis.analysis(projectSource);
 }
 
-function eslint(listOfFiles) {
-	const lintingResults = require("./analyzers/eslint").analysis(listOfFiles);
+async function eslint(projectRoot, listOfFiles) {
+	let lintingResults;
 
-	// Remove messages that originate from parsing error
-	lintingResults.eslint.results.forEach((element) => {
-		element.messages = element.messages.filter((el) => !el.fatal);
+	await lib.checkIfEslintrcExists(projectRoot).then((list) => {
+		// Check for already existing eslint configurations that override the cyclopt ones
+		const files = list.map((el) => el.split("/").join("\\"));
+		const contents = [];
+		files.forEach((file) => {
+			contents.push(fs.readFileSync(file).toString());
+			fs.unlinkSync(file);
+		});
+
+		// Run eslint
+		lintingResults = require("./analyzers/eslint").analysis(listOfFiles);
+
+		// Remove messages that originate from parsing error
+		lintingResults.eslint.results.forEach((element) => {
+			element.messages = element.messages.filter((el) => !el.fatal);
+		});
+
+		// Write back already deleted eslint configurations
+		files.forEach((file, index) => {
+			fs.writeFileSync(file, contents[index]);
+		});
 	});
 
 	return lintingResults;
@@ -104,27 +119,28 @@ module.exports = {
 	analyze_all(projectRoot, listOfFiles, npmExecutablePath) {
 		return new Promise((resolve, reject) => {
 			const escomplexResults = escomplex(listOfFiles);
-			const eslintResults = eslint(listOfFiles);
-			const npmauditResults = npmaudit(projectRoot, npmExecutablePath);
-			const commentsResults = commentsAnalyzer(listOfFiles);
-			jsinspect(listOfFiles).then((jsinspectResults) => {
-				sonarjs(projectRoot).then((sonarjsResults) => {
-					const results = {};
-					results.escomplex = escomplexResults.escomplex;
-					results.eslint = eslintResults.eslint;
-					results.npm_audit = npmauditResults.npmaudit;
-					results.jsinspect = jsinspectResults;
-					results.sonarjs = sonarjsResults;
-					results.commentsInfo = commentsResults;
-					resolve(results);
+			eslint(projectRoot, listOfFiles).then((eslintResults) => {
+				const npmauditResults = npmaudit(projectRoot, npmExecutablePath);
+				const commentsResults = commentsAnalyzer(listOfFiles);
+				jsinspect(listOfFiles).then((jsinspectResults) => {
+					sonarjs(projectRoot).then((sonarjsResults) => {
+						const results = {};
+						results.escomplex = escomplexResults.escomplex;
+						results.eslint = eslintResults.eslint;
+						results.npm_audit = npmauditResults.npmaudit;
+						results.jsinspect = jsinspectResults;
+						results.sonarjs = sonarjsResults;
+						results.commentsInfo = commentsResults;
+						resolve(results);
+					})
+						.catch((error) => {
+							reject(new Error("sonarjs analysis failed", error));
+						});
 				})
 					.catch((error) => {
-						reject(new Error("sonarjs analysis failed", error));
+						reject(new Error("jsinspect analysis failed", error));
 					});
-			})
-				.catch((error) => {
-					reject(new Error("jsinspect analysis failed", error));
-				});
+			});
 		});
 	},
 	analyze_sonarjs(projectRoot) {
@@ -133,9 +149,9 @@ module.exports = {
 			reject(new Error("sonarjs analysis failed"));
 		});
 	},
-	analyze_eslint(listOfFiles) {
+	analyze_eslint(projectRoot, listOfFiles) {
 		return new Promise((resolve, reject) => {
-			resolve(eslint(listOfFiles));
+			resolve(eslint(projectRoot, listOfFiles));
 			reject(new Error("eslint analysis failed"));
 		});
 	},

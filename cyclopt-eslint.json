@@ -1,11 +1,13 @@
 {
     "parser": "babel-eslint",
     "env": {
-      "react-native/react-native": true
+      "react-native/react-native": true,
+	  "browser": true,
+	  "node": true
     },
     "parserOptions": {
         "ecmaVersion": 2020,
-        "sourceType": "script",
+        "sourceType": "module",
         "ecmaFeatures": {
             "jsx": true,
             "modules": true,
@@ -31,5 +33,8 @@
             "version": "15.6.1"
         }
     },
-    "ignorePatterns": ["cypress/", "test/", "tests/"]
+    "ignorePatterns": ["cypress/", "test/", "tests/"],
+    "rules":{
+        "sonarjs/cognitive-complexity": "off"
+    }
   }

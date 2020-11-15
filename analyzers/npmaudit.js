@@ -14,7 +14,6 @@ module.exports = {
 	analysis(packageJSON, packageLock, npmExecutablePath) {
 		const npmCommand = !npmExecutablePath ? "npm" : npmExecutablePath;
 
-		console.log(npmCommand);
 		// Run npmaudit
 		const dirBefore = shell.pwd();
 		shell.cd(shell.tempdir());

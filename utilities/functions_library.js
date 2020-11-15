@@ -42,4 +42,19 @@ module.exports = {
 	removeImportsExports(str) {
 		return str.replace(/^import.*$/m, "").replace(/^export.*$/m, "");
 	},
+	checkIfEslintrcExists(rootDir) {
+		return new Promise((resolve) => {
+			const walker = walk.walk(rootDir, { filters: ["node_modules", "test"] });
+			const eslintConfigFiles = [];
+			walker.on("file", (root, fileStats, next) => {
+				if (fileStats.name.startsWith(".eslintrc")) {
+					eslintConfigFiles.push(root + path.sep + fileStats.name);
+				}
+				next();
+			});
+			walker.on("end", () => {
+				resolve(eslintConfigFiles);
+			});
+		});
+	},
 };

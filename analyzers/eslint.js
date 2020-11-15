@@ -8,8 +8,8 @@ const path = require("path");
 
 // Basic eslint rules
 const cli = new CLIEngine({
-	useEslintrc: false,
 	configFile: `${path.join(path.resolve(__dirname), "..")}/cyclopt-eslint.json`,
+	resolvePluginsRelativeTo: `${path.join(path.resolve(__dirname), "..")}`,
 });
 
 module.exports = {

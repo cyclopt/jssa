@@ -6,9 +6,7 @@
 const { analyze } = require("sonarjs");
 
 // Function for logging purposes
-function log(message) {
-	console.log(message);
-}
+function log() { /* empty */ }
 
 function onStart() {
 	console.log("Sonarjs analysis started");

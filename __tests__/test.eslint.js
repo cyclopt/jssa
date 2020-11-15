@@ -10,7 +10,7 @@ beforeAll(async () => {
 	await utilities.get_list_of_js_files(projectRootDirectory).then((paths) => {
 		lisoOfFiles = paths;
 	});
-	await analysis.analyze_eslint(lisoOfFiles).then((res) => {
+	await analysis.analyze_eslint(projectRootDirectory, lisoOfFiles).then((res) => {
 		analysisResults = res;
 	});
 });
@@ -23,6 +23,6 @@ describe("eslint analysis", () => {
 		expect(analysisResults.eslint.errorCount).toBeGreaterThan(0);
 	});
 	it("Number of errors", () => {
-		expect(analysisResults.eslint.errorCount).toBe(7);
+		expect(analysisResults.eslint.errorCount).toBeGreaterThan(200);
 	});
 });
