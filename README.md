@@ -1,4 +1,3 @@
-[![Cyclopt rating](https://qaas.cyclopt.com/api/projects/5af58bbb718d390004e0feb8/badge?ver=new)](https://qaas.cyclopt.com)
 ![Coverage](https://github.com/cyclopt/jssa/blob/master/badge-lines.svg)
 
 # jssa
@@ -18,14 +17,14 @@ $ const jssa = require('jssa');
 ```
 2. Analyze js code
 ```javascript
-var project_root_directory = "example_project_to_analyze";
-var list_of_js_files = [ 'example_project/app.js',
+const project_root_directory = "example_project_to_analyze";
+const list_of_js_files = [ 'example_project/app.js',
   'example_project/appcopy.js',
   'example_project/sonarjs.js',
   'example_project/routes/index.js',
   'example_project/routes/users.js' ]
 
-jssa.analyze_all(project_root_directory, list_of_js_files).then(res => {
+jssa.analyze_all(project_root_directory, list_of_js_files, "npm").then(res => {
   analysis_results = res; // Object containing the analysis results
 })
 .catch(err => {
@@ -47,7 +46,3 @@ or
 ```sh
 npm test-linux
 ```
-
-## Publish steps
-
-(useful for maintainers)
