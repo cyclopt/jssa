@@ -3,8 +3,9 @@
  */
 
 // Load libraries
-const { CLIEngine } = require("eslint");
 const path = require("path");
+
+const { CLIEngine } = require("eslint");
 
 // Basic eslint rules
 const cli = new CLIEngine({

@@ -4,9 +4,10 @@
  */
 
 // Load libraries
-const jsinspect = require("jsinspect");
 const stream = require("stream");
 const util = require("util");
+
+const jsinspect = require("jsinspect");
 
 const Writable = stream.Writable;
 
@@ -60,7 +61,7 @@ module.exports = {
 				try {
 					analysisOutput.jsinspect = JSON.parse(memStore.output.toString());
 					resolve(analysisOutput);
-				} catch (error) {
+				} catch {
 					// TODO (Handle cases where the buffer is more than 256MB. In those cases toString() function fails)
 					analysisOutput.jsinspect = JSON.parse("[]");
 					resolve(analysisOutput);

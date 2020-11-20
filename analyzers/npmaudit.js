@@ -12,7 +12,7 @@ const fileNames = {
 module.exports = {
 	// Perfrorm analysis
 	analysis(packageJSON, packageLock, npmExecutablePath) {
-		const npmCommand = !npmExecutablePath ? "npm" : npmExecutablePath;
+		const npmCommand = npmExecutablePath || "npm";
 
 		// Run npmaudit
 		const dirBefore = shell.pwd();

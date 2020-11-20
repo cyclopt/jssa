@@ -1,6 +1,7 @@
 const fs = require("fs");
-const walk = require("walk");
 const path = require("path");
+
+const walk = require("walk");
 
 module.exports = {
 	readCode(pathToCode) {
@@ -47,7 +48,8 @@ module.exports = {
 			const walker = walk.walk(rootDir, { filters: ["node_modules", "test"] });
 			const eslintConfigFiles = [];
 			walker.on("file", (root, fileStats, next) => {
-				if (fileStats.name.startsWith(".eslintrc")) {
+				// Catch files that contain eslint configuration
+				if (fileStats.name.startsWith(".eslintrc") || fileStats.name === "package.json") {
 					eslintConfigFiles.push(root + path.sep + fileStats.name);
 				}
 				next();

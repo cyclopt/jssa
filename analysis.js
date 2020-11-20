@@ -3,10 +3,11 @@
  */
 
 // Load libraries
-const _ = require("lodash");
-const CommentsExtractor = require("comments-extractor");
 const fs = require("fs");
 const path = require("path");
+
+const _ = require("lodash");
+const CommentsExtractor = require("comments-extractor");
 
 // Load analyzers
 const escomplexAnalysis = require("./analyzers/escomplex");
@@ -16,7 +17,6 @@ const sonarjsAnalysis = require("./analyzers/sonarjs");
 
 // Load custom modules
 const lib = require("./utilities/functions_library");
-
 
 function commentsAnalyzer(listOfFiles) {
 	const commentsInfo = [];
@@ -44,7 +44,7 @@ function commentsAnalyzer(listOfFiles) {
 					commentsLOC: 0,
 				});
 			}
-		} catch (error) {
+		} catch {
 			commentsInfo.push({
 				filePath,
 				lloc: locInfo.lloc,
