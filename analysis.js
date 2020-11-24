@@ -10,11 +10,7 @@ const _ = require("lodash");
 const CommentsExtractor = require("comments-extractor");
 
 // Load analyzers
-const escomplexAnalysis = require("./analyzers/escomplex");
-const npmauditAnalysis = require("./analyzers/npmaudit");
-const jsinspectAnalysis = require("./analyzers/jsinspect");
-const sonarjsAnalysis = require("./analyzers/sonarjs");
-
+const { eslintAnalysis, escomplexAnalysis, jsinspectAnalysis, npmauditAnalysis, sonarjsAnalysis } = require("./analyzers");
 // Load custom modules
 const lib = require("./utilities/functions_library");
 
@@ -64,29 +60,26 @@ function escomplex(listOfFiles) {
 }
 
 async function eslint(projectRoot, listOfFiles) {
-	let lintingResults;
+	// Check for already existing eslint configurations that override the cyclopt ones
+	const list = await lib.checkIfEslintrcExists(projectRoot);
 
-	await lib.checkIfEslintrcExists(projectRoot).then((list) => {
-		// Check for already existing eslint configurations that override the cyclopt ones
-		const files = list.map((el) => el.split("/").join("\\"));
-		const contents = [];
-		files.forEach((file) => {
-			contents.push(fs.readFileSync(file).toString());
-			fs.unlinkSync(file);
-		});
+	const contents = [];
+	list.forEach((file) => {
+		contents.push(fs.readFileSync(file).toString());
+		fs.unlinkSync(file);
+	});
 
-		// Run eslint
-		lintingResults = require("./analyzers/eslint").analysis(listOfFiles);
+	// Run eslint
+	const lintingResults = eslintAnalysis.analysis(listOfFiles);
 
-		// Remove messages that originate from parsing error
-		lintingResults.eslint.results.forEach((element) => {
-			element.messages = element.messages.filter((el) => !el.fatal);
-		});
+	// Remove messages that originate from parsing error
+	lintingResults.eslint.results.forEach((element) => {
+		element.messages = element.messages.filter((el) => !el.fatal);
+	});
 
-		// Write back already deleted eslint configurations
-		files.forEach((file, index) => {
-			fs.writeFileSync(file, contents[index]);
-		});
+	// Write back already deleted eslint configurations
+	list.forEach((file, index) => {
+		fs.writeFileSync(file, contents[index]);
 	});
 
 	return lintingResults;

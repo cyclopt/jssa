@@ -5,7 +5,7 @@
 
 // Load libraries
 const stream = require("stream");
-const util = require("util");
+const { inherits } = require("util");
 
 const jsinspect = require("jsinspect");
 
@@ -38,7 +38,7 @@ class WMStrm {
 		cb();
 	}
 }
-util.inherits(WMStrm, Writable);
+inherits(WMStrm, Writable);
 
 module.exports = {
 	// Perfrorm analysis

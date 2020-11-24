@@ -1,7 +1,6 @@
 const fs = require("fs");
-const path = require("path");
 
-const walk = require("walk");
+const globby = require("globby");
 
 module.exports = {
 	readCode(pathToCode) {
@@ -25,38 +24,39 @@ module.exports = {
 			code: sourceCode,
 		};
 	},
-	get_list_of_js_files(rootDir) {
-		return new Promise((resolve) => {
-			const walker = walk.walk(rootDir, { filters: ["node_modules", "test"] });
-			const listOfFiles = [];
-			walker.on("file", (root, fileStats, next) => {
-				if (fileStats.name.endsWith(".js")) {
-					listOfFiles.push(root + path.sep + fileStats.name);
-				}
-				next();
-			});
-			walker.on("end", () => {
-				resolve(listOfFiles);
-			});
-		});
+	async get_list_of_js_files(rootDir) {
+		const jsPaths = await globby(
+			[
+				`${rootDir}/**/*.js`,
+				`!(${rootDir}/node_modules)`,
+				`!(${rootDir}/__tests__)`,
+				`!(${rootDir}/tests)`,
+				`!(${rootDir}/test)`,
+				`!(${rootDir}/coverage)`,
+			], { dot: true },
+		);
+
+		// Exclude eslint configuration file
+		const jsPathsFinal = jsPaths.filter((el) => !el.endsWith(".eslintrc.js"));
+
+		return jsPathsFinal;
 	},
 	removeImportsExports(str) {
 		return str.replace(/^import.*$/m, "").replace(/^export.*$/m, "");
 	},
-	checkIfEslintrcExists(rootDir) {
-		return new Promise((resolve) => {
-			const walker = walk.walk(rootDir, { filters: ["node_modules", "test"] });
-			const eslintConfigFiles = [];
-			walker.on("file", (root, fileStats, next) => {
-				// Catch files that contain eslint configuration
-				if (fileStats.name.startsWith(".eslintrc") || fileStats.name === "package.json") {
-					eslintConfigFiles.push(root + path.sep + fileStats.name);
-				}
-				next();
-			});
-			walker.on("end", () => {
-				resolve(eslintConfigFiles);
-			});
-		});
+	async checkIfEslintrcExists(rootDir) {
+		console.log("aaa", rootDir);
+		const eslintConfigFiles = await globby(
+			[
+				`${rootDir}/**/.eslintrc*`,
+				`!(${rootDir}/node_modules)`,
+				`!(${rootDir}/__tests__)`,
+				`!(${rootDir}/tests)`,
+				`!(${rootDir}/test)`,
+				`!(${rootDir}/coverage)`,
+			], { dot: true },
+		);
+
+		return eslintConfigFiles;
 	},
 };
