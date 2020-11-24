@@ -23,7 +23,6 @@
     "extends": [
       "eslint:recommended",
       "plugin:react/recommended",
-      "plugin:react-native/all",
       "plugin:security/recommended",
       "plugin:sonarjs/recommended" 
     ],
@@ -35,6 +34,8 @@
     },
     "ignorePatterns": ["cypress/", "test/", "tests/"],
     "rules":{
-        "sonarjs/cognitive-complexity": "off"
+        "sonarjs/cognitive-complexity": "off",
+        "react/react-in-jsx-scope": "off",
+        "react/display-name": "off"
     }
   }

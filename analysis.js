@@ -60,6 +60,8 @@ function escomplex(listOfFiles) {
 }
 
 async function eslint(projectRoot, listOfFiles) {
+	// Run eslint
+
 	// Check for already existing eslint configurations that override the cyclopt ones
 	const list = await lib.checkIfEslintrcExists(projectRoot);
 
@@ -68,10 +70,7 @@ async function eslint(projectRoot, listOfFiles) {
 		contents.push(fs.readFileSync(file).toString());
 		fs.unlinkSync(file);
 	});
-
-	// Run eslint
 	const lintingResults = eslintAnalysis.analysis(listOfFiles);
-
 	// Remove messages that originate from parsing error
 	lintingResults.eslint.results.forEach((element) => {
 		element.messages = element.messages.filter((el) => !el.fatal);
@@ -81,7 +80,6 @@ async function eslint(projectRoot, listOfFiles) {
 	list.forEach((file, index) => {
 		fs.writeFileSync(file, contents[index]);
 	});
-
 	return lintingResults;
 }
 
@@ -142,11 +140,9 @@ module.exports = {
 			reject(new Error("sonarjs analysis failed"));
 		});
 	},
-	analyze_eslint(projectRoot, listOfFiles) {
-		return new Promise((resolve, reject) => {
-			resolve(eslint(projectRoot, listOfFiles));
-			reject(new Error("eslint analysis failed"));
-		});
+	async analyze_eslint(projectRoot, listOfFiles) {
+		const results = await eslint(projectRoot, listOfFiles);
+		return results;
 	},
 	analyze_npmaudit(projectRoot, npmExecutablePath) {
 		return new Promise((resolve, reject) => {
