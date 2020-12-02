@@ -45,9 +45,11 @@ module.exports = {
 		return str.replace(/^import.*$/m, "").replace(/^export.*$/m, "");
 	},
 	async checkIfEslintrcExists(rootDir) {
+		// Find files that may contain configuration guidelines for eslint
 		const eslintConfigFiles = await globby(
 			[
 				`${rootDir}/**/.eslintrc*`,
+				`${rootDir}/**/package.json`,
 				`!(${rootDir}/node_modules)`,
 				`!(${rootDir}/__tests__)`,
 				`!(${rootDir}/tests)`,
